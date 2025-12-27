@@ -1,0 +1,398 @@
+{
+  "info": {
+    "name": "e-FME REST API",
+    "description": "Collection complète pour tester l'API e-FME",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/e-FME-API",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@efme.com\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users?limit=50&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/user_admin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user_admin"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New User\",\n  \"email\": \"newuser@efme.com\",\n  \"password\": \"password123\",\n  \"role\": \"technician\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated User Name\",\n  \"role\": \"manager\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/user_tech1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user_tech1"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/user_to_delete",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "user_to_delete"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sites",
+      "item": [
+        {
+          "name": "Get All Sites",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sites",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sites"]
+            }
+          }
+        },
+        {
+          "name": "Get Site by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sites/site_001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sites", "site_001"]
+            }
+          }
+        },
+        {
+          "name": "Create Site",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nouveau Site\",\n  \"code_site\": \"SITE-003\",\n  \"latitude\": 48.8566,\n  \"longitude\": 2.3522,\n  \"radius_meters\": 150\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sites",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sites"]
+            }
+          }
+        },
+        {
+          "name": "Update Site",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Site Modifié\",\n  \"radius_meters\": 200\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sites/site_001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sites", "site_001"]
+            }
+          }
+        },
+        {
+          "name": "Delete Site",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sites/site_to_delete",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sites", "site_to_delete"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PM Tasks",
+      "item": [
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tasks?status=pending&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Task by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tasks/task_id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks", "task_id"]
+            }
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Maintenance mensuelle\",\n  \"description\": \"Vérification complète de l'équipement\",\n  \"site_id\": \"site_001\",\n  \"assigned_to\": \"user_tech1\",\n  \"planned_date\": \"2024-12-30\",\n  \"status\": \"pending\",\n  \"priority\": \"high\",\n  \"created_by\": \"user_admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tasks",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks"]
+            }
+          }
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tasks/task_id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks", "task_id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/tasks/task_id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tasks", "task_id"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
